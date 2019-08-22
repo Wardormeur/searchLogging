@@ -1,7 +1,7 @@
 package main
 
 import (
-  "./controllers"
+  "searchCurator/controllers"
   "github.com/labstack/echo"
   "github.com/labstack/echo/middleware"
 )

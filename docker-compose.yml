@@ -1,0 +1,28 @@
+version: "2"
+
+services:
+  app: &go
+    build: .
+    volumes:
+      - .:/src/app
+      - /home/wardormeur/go/pkg/mod:/go/src
+    environment:
+      - POSTGRES_HOST=db
+      - POSTGRES_DB=curations
+      - POSTGRES_USER=curator
+      - POSTGRES_PASSWORD=publicIAM
+    working_dir: /src/app
+    command: go run server.go
+    depends_on:
+      - db
+  db:
+    image: postgres:11
+    environment:
+      - POSTGRES_USER=curator
+      - POSTGRES_DB=curations
+      - POSTGRES_PASSWORD=publicIAM
+    ports:
+      - 5432:5432
+  int:
+    <<: *go
+    command: go test

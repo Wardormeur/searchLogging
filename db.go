@@ -1,20 +1,26 @@
 package main
 
 import (
+  "os"
+  "fmt"
   "github.com/jinzhu/gorm"
-  "./models"
-  _ "github.com/jinzhu/gorm/dialects/sqlite"
+  "searchCurator/models"
+  _ "github.com/jinzhu/gorm/dialects/postgres"
 )
 
 func InitDB() *gorm.DB {
-  db, err := gorm.Open("sqlite3", "test.db")
+  dbHost, _ := os.LookupEnv("POSTGRES_HOST")
+  username, _ := os.LookupEnv("POSTGRES_USER")
+  dbName, _ := os.LookupEnv("POSTGRES_DB")
+  password, _ := os.LookupEnv("POSTGRES_PASSWORD")
+  dbUri := fmt.Sprintf("host=%s user=%s dbname=%s sslmode=disable password=%s", dbHost, username, dbName, password)
+  fmt.Println(dbUri)
+  db, err := gorm.Open("postgres", dbUri)
   if err != nil {
-    panic("failed to open db")
+    panic(err)
   }
 
   db.AutoMigrate(&models.Listing{})
-
-  db.Create(&models.Listing{Url:"https://indeed.com", Selector:"body>div"})
   return db
 }
 

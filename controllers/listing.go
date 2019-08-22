@@ -3,7 +3,8 @@ package controllers
 import (
   "github.com/labstack/echo"
   "github.com/jinzhu/gorm"
-  "../models"
+  "searchCurator/models"
+  "fmt"
   "strconv"
   "net/http"
 )
@@ -22,7 +23,12 @@ func CreateListing(db *gorm.DB) (func(c echo.Context) error) {
   return func (c echo.Context) error {
     listing := new(models.Listing)
     if err := c.Bind(listing); err != nil {
+      fmt.Printf("%v",err)
       return err
+    }
+    if dbc := db.Create(&listing); dbc.Error != nil {
+      fmt.Printf("%v",dbc.Error)
+      return dbc.Error
     }
     return c.JSON(http.StatusCreated, listing)
   }

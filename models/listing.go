@@ -8,4 +8,5 @@ type Listing struct {
   gorm.Model
   Url string
   Selector string
+  LinkSelector string
 }
