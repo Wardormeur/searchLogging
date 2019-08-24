@@ -1,11 +1,11 @@
 # Simplistic backend for logging
 
 ## Run
-`go run server.go db.go`
+`make up`
 
 ## Test
 ### Integration
-`go test ./...`
+`make test`
 ### Unit
 TBD
 

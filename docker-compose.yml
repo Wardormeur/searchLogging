@@ -1,7 +1,6 @@
 version: "2"
 
-services:
-  app: &go
+x-app: &base
     build: .
     volumes:
       - .:/src/app
@@ -12,9 +11,13 @@ services:
       - POSTGRES_USER=curator
       - POSTGRES_PASSWORD=publicIAM
     working_dir: /src/app
-    command: go run server.go
+    command: reflex -r '(\.go$$|go\.mod)' -s go run .
     depends_on:
       - db
+
+services:
+  app:
+    <<: *base
   db:
     image: postgres:11
     environment:
@@ -23,6 +26,3 @@ services:
       - POSTGRES_PASSWORD=publicIAM
     ports:
       - 5432:5432
-  int:
-    <<: *go
-    command: go test

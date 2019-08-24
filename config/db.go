@@ -1,4 +1,4 @@
-package main
+package config 
 
 import (
   "os"
@@ -19,7 +19,7 @@ func InitDB() *gorm.DB {
   if err != nil {
     panic(err)
   }
-
+  db.LogMode(true)
   db.AutoMigrate(&models.Listing{})
   return db
 }

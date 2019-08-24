@@ -4,10 +4,9 @@ import (
   "net/http"
   "testing"
   "strings"
-  "time"
   "encoding/json"
   "searchCurator/models"
-  "github.com/jinzhu/gorm"
+  "searchCurator/config"
   "github.com/stretchr/testify/assert"
   "github.com/stretchr/testify/suite"
 )
@@ -21,11 +20,10 @@ func (suite *ListingSuite) SetupTest() {
   suite.payload = `{"url": "https://indeed.com", "selector": "body>div" }`
 }
 func (suite *ListingSuite) TearDownTest() {
-  time.Sleep(time.Second)
-  db, err := gorm.Open("sqlite3", "test.db")
-  assert.NoError(suite.T(), err)
-  // Note: Bad me, bad 
-  db.Delete(&models.Listing{})
+  db := config.InitDB()
+  // db.LogMode(true)
+  db.Unscoped().Delete(&models.Listing{})
+  db.Exec("ALTER SEQUENCE listings_id_seq RESTART WITH 1")
   db.Close()
 }
 func (suite *ListingSuite) TestCreateListing() {
