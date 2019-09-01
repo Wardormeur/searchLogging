@@ -15,6 +15,8 @@ func main() {
 
   e.POST("/listings", controllers.CreateListing(db))
   e.GET("/listings/:id", controllers.GetListing(db))
+  e.POST("/items", controllers.CreateItem(db))
+  e.GET("/items/:id", controllers.GetItem(db))
 
   e.Logger.Fatal(e.Start(":1323"))
   defer config.CloseConnection(db)

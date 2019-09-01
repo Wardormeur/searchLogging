@@ -12,9 +12,7 @@ func GetListing(db *gorm.DB) (func(c echo.Context) error) {
   return func (c echo.Context) error {
     id, _ := strconv.ParseUint(c.Param("id"), 10, 32)
     listing := models.Listing{}
-    // listing.ID = uint(id)
     if dbc := db.First(&listing, uint(id)); dbc.Error != nil {
-    // if dbc := db.Find(&listing); dbc.Error != nil {
       fmt.Println(dbc.Error, &listing, int(id))
       return echo.NewHTTPError(http.StatusNotFound)
     }

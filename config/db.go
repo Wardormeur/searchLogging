@@ -14,13 +14,13 @@ func InitDB() *gorm.DB {
   dbName, _ := os.LookupEnv("POSTGRES_DB")
   password, _ := os.LookupEnv("POSTGRES_PASSWORD")
   dbUri := fmt.Sprintf("host=%s user=%s dbname=%s sslmode=disable password=%s", dbHost, username, dbName, password)
-  fmt.Println(dbUri)
   db, err := gorm.Open("postgres", dbUri)
   if err != nil {
     panic(err)
   }
   db.LogMode(true)
   db.AutoMigrate(&models.Listing{})
+  db.AutoMigrate(&models.Item{})
   return db
 }
 
